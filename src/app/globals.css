@@ -4,21 +4,24 @@
 
 @font-face {
   font-family: 'GmarketSans';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+    format('woff');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'GmarketSans';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff')
+    format('woff');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'GmarketSans';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff')
+    format('woff');
   font-weight: 700;
   font-style: normal;
 }
@@ -31,5 +34,53 @@
 
   html {
     font-family: 'Black Han Sans', sans-serif;
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 240px;
+    height: 180px;
+    background: url('/Vector-2.svg') no-repeat bottom right/contain;
+    z-index: 20;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    left: 36%;
+    top: 8%;
+    width: 40px;
+    height: 40px;
+    background: url('/Vector-4.svg') no-repeat center/cover;
+    z-index: 20;
+  }
+
+  div[data-type='bingo-board'] {
+    position: relative;
+  }
+
+  div[data-type='bingo-board']::after {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 100px;
+    height: 100px;
+    background: url('/Vector-1.svg') no-repeat center/cover;
+    z-index: 1;
+  }
+
+  div[data-type='bingo-board']::before {
+    content: '';
+    position: absolute;
+    left: 58%;
+    top: 50%;
+    width: 40px;
+    height: 80px;
+    background: url('/Vector-3.svg') no-repeat center/contain;
+    z-index: 1;
   }
 }

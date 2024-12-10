@@ -27,7 +27,8 @@
     },
     "correct": 1,
     "Comment": "한국어를 모국어로 사용하는 인구는 전 세계에서 14위로, 약 7,730만 명\n출처: 위키피디아",
-    "imageUrl": "1-2.png"
+    "imageUrl": "1-2.png",
+    "correct_imageUrl": "2.jpg"
   },
   {
     "keyword": "공백",
@@ -71,8 +72,9 @@
       "4": "배당금 부자"
     },
     "correct": 3,
-    "Comment": "이미지 첨부",
-    "imageUrl": "5.png"
+    "Comment": "",
+    "imageUrl": "5.png",
+    "correct_imageUrl": "5.jpg"
   },
   {
     "keyword": "근면",
@@ -87,7 +89,8 @@
     },
     "correct": 4,
     "Comment": "깨단 : 유머\n결국 근면함은 일에 관한 것. 일 일을 아예 안하게 되는 세상이 온다고 했을 때는 유머라고 생각.\n아무리 공부하고 따라한다고 해서 할 수 있는게 아니다.",
-    "imageUrl": "6-7.png"
+    "imageUrl": "6-7.png",
+    "correct_imageUrl": "6.jpg"
   },
   {
     "keyword": "휴일",
@@ -131,8 +134,9 @@
       "4": "서세원쇼"
     },
     "correct": 3,
-    "Comment": "이미지 첨부",
-    "imageUrl": "9-10.png"
+    "Comment": "",
+    "imageUrl": "9-10.png",
+    "correct_imageUrl": "9.png"
   },
   {
     "keyword": "영화",
@@ -146,8 +150,9 @@
       "4": "조제, 호랑이 그리고 물고기들"
     },
     "correct": 4,
-    "Comment": "이미지 첨부",
-    "imageUrl": "9-10.png"
+    "Comment": "",
+    "imageUrl": "9-10.png",
+    "correct_imageUrl": "10.jpg"
   },
   {
     "keyword": "동물",
@@ -155,14 +160,16 @@
     "month": "6월 자유도서 (깨단)",
     "question": "긴긴밤에는 펭귄이 등장합니다.\n다음중 젠투펭귄은 몇번일까요?",
     "answer": {
-      "1": "(사진) 황제펭귄",
-      "2": "(사진) 아델리펭귄",
-      "3": "(사진) 젠투펭귄",
-      "4": "(사진) 마카로니펭귄"
+      "1": "마카로니 펭귄",
+      "2": "아델리 펭귄",
+      "3": "젠투 펭귄",
+      "4": "황제 펭귄"
     },
     "correct": 3,
-    "Comment": "1. (사진) 황제펭귄\n2. (사진) 아델리펭귄\n3. (사진) 젠투펭귄\n4. (사진) 마카로니펭귄",
-    "imageUrl": "11.png"
+    "Comment": "",
+    "imageUrl": "11.png",
+    "correct_imageUrl": "11.png",
+    "answer_imageUrl": true
   },
   {
     "keyword": "지리",
@@ -229,7 +236,7 @@
     "book": "『여자 주인공만 모른다』 듀나 ",
     "month": "7월 자유도서 (바름)",
     "question": "주인공이 여자인 영화 5개 3초 내에 대답하기",
-    "answer": {},
+    "answer": null,
     "correct": null,
     "Comment": "",
     "imageUrl": "16.png"
@@ -261,8 +268,9 @@
       "4": "23권"
     },
     "correct": 3,
-    "Comment": "이미지 첨부",
-    "imageUrl": "18.png"
+    "Comment": "",
+    "imageUrl": "18.png",
+    "correct_imageUrl": "18.jpg"
   },
   {
     "keyword": "판결",
@@ -306,8 +314,9 @@
       "4": "1998년"
     },
     "correct": 4,
-    "Comment": "이미지 첨부",
-    "imageUrl": "20-21.png"
+    "Comment": "",
+    "imageUrl": "20-21.png",
+    "correct_imageUrl": "21.jpg"
   },
   {
     "keyword": "플랫",
@@ -325,48 +334,36 @@
     "imageUrl": "22.png"
   },
   {
-    "keyword": "24",
-    "book": "『플랫랜드』 에드윈 A. 애보트 ",
-    "month": "1월 지정도서 (나나)",
-    "question": "음악 기호 중, 플랫을 나타내는 기호는 몇 번일까요?",
-    "answer": {
-      "1": "§",
-      "2": "#",
-      "3": "♮",
-      "4": "♭"
-    },
-    "correct": 4,
-    "Comment": "1. §- 책의 섹션이나 챕터\n2. # - 반음을 올림\n3. ♮ - 제자리표\n4. ♭",
-    "imageUrl": "23.png"
+    "keyword": "선물",
+    "book": "",
+    "month": "",
+    "question": "",
+    "answer": {},
+    "correct": 1,
+    "Comment": "",
+    "imageUrl": "bonus.svg",
+    "bonus": true
   },
   {
-    "keyword": "23",
-    "book": "『플랫랜드』 에드윈 A. 애보트 ",
-    "month": "1월 지정도서 (나나)",
-    "question": "음악 기호 중, 플랫을 나타내는 기호는 몇 번일까요?",
-    "answer": {
-      "1": "§",
-      "2": "#",
-      "3": "♮",
-      "4": "♭"
-    },
-    "correct": 4,
-    "Comment": "1. §- 책의 섹션이나 챕터\n2. # - 반음을 올림\n3. ♮ - 제자리표\n4. ♭",
-    "imageUrl": "23.png"
+    "keyword": "연산",
+    "book": "",
+    "month": "",
+    "question": "",
+    "answer": {},
+    "correct": 1,
+    "Comment": "",
+    "imageUrl": "bonus.svg",
+    "bonus": true
   },
   {
-    "keyword": "24",
-    "book": "『플랫랜드』 에드윈 A. 애보트 ",
-    "month": "1월 지정도서 (나나)",
-    "question": "음악 기호 중, 플랫을 나타내는 기호는 몇 번일까요?",
-    "answer": {
-      "1": "§",
-      "2": "#",
-      "3": "♮",
-      "4": "♭"
-    },
-    "correct": 4,
-    "Comment": "1. §- 책의 섹션이나 챕터\n2. # - 반음을 올림\n3. ♮ - 제자리표\n4. ♭",
-    "imageUrl": "23.png"
+    "keyword": "역사",
+    "book": "",
+    "month": "",
+    "question": "",
+    "answer": {},
+    "correct": 1,
+    "Comment": "",
+    "imageUrl": "bonus.svg",
+    "bonus": true
   }
 ]

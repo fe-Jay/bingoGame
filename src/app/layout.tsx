@@ -1,19 +1,19 @@
-import "./globals.css"
-import type { Metadata } from "next"
+import './globals.css';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "빙고 게임",
-  description: "책책책! 빙고 게임",
-}
+  title: '빙고 게임',
+  description: '책책책! 빙고 게임',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="ko">
-      <body className="font-gmarket">{children}</body>
+      <body className="font-gmarket relative">{children}</body>
     </html>
-  )
+  );
 }

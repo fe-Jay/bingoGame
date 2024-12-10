@@ -1,6 +1,5 @@
-import BingoBoard from "@/components/bingo-board"
+import BingoBoard from '@/components/bingo-board';
 
 export default function Page() {
-  return <BingoBoard />
+  return <BingoBoard />;
 }
-
