@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback, type ReactElement } from 'react';
+import type { QuestionType } from '@/lib/api';
 import {
   Dialog,
   DialogContent,
@@ -18,26 +19,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 
-interface Question {
-  id: number;
-  keyword: string;
-  book: string;
-  month: string;
-  question: string;
-  answer: {
-    1: string;
-    2: string;
-    3: string;
-    4: string;
-  };
-  correct: number;
-  Comment: string;
-  imageUrl: string;
-  answer_imageUrl?: boolean;
-  correct_imageUrl?: string;
-  bonus?: boolean;
-}
-
 interface ChanceCard {
   id: string;
   description: string;
@@ -54,17 +35,16 @@ const chanceCards: ChanceCard[] = [
   { id: 'chance5', description: '보기 제거 \n찬스' },
 ];
 
-// 데이터 fetch 함수
-async function getQuestions(): Promise<Question[]> {
-  const res = await fetch('/api/api.json');
-  const data = await res.json();
-  return data;
+interface BingoBoardProps {
+  initialQuestions: QuestionType[];
 }
 
-export default function BingoBoard() {
+export function BingoBoard({
+  initialQuestions,
+}: BingoBoardProps): ReactElement {
+  const [questions] = useState(() => initialQuestions);
   const [ready, setReady] = useState(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
+  const [selectedQuestion, setSelectedQuestion] = useState<QuestionType | null>(
     null,
   );
   const [showAnswer, setShowAnswer] = useState(false);
@@ -87,67 +67,6 @@ export default function BingoBoard() {
     [],
   );
 
-  useEffect(() => {
-    getQuestions().then((data) => {
-      // 데이터를 랜덤하게 섞어서 25개만 선택
-      const shuffled = [...data].sort(() => 0.5 - Math.random()).slice(0, 25);
-      setQuestions(shuffled);
-    });
-  }, []);
-
-  // 키워드 버튼 클릭
-  const handleCellClick = (question: Question) => {
-    setSelectedQuestion(question);
-    setShowAnswer(false);
-    setShowQuestion(false);
-    setSelectedAnswer(null);
-  };
-
-  // 정답 보기 버튼 클릭 시 호출
-  const handleShowAnswer = (key: string) => {
-    const numKey = parseInt(key);
-    setSelectedAnswer(numKey);
-    setShowAnswer(numKey === correct);
-  };
-
-  // 문제 보기 버튼 클릭 시 호출
-  const handleShowQuestion = () => {
-    setShowQuestion(true);
-  };
-
-  // 팀별 정답 클릭 시 호출
-  const handleAnswer = (team: '광주여성팀' | '도그이어팀') => {
-    if (selectedQuestion) {
-      const questionIndex = questions.findIndex(
-        (q) => q.keyword === selectedQuestion.keyword,
-      );
-      if (questionIndex !== -1) {
-        setSelectedCells((prev) => {
-          const newMap = new Map(prev);
-          newMap.set(questionIndex, team);
-          return newMap;
-        });
-      }
-      setSelectedQuestion(null);
-      setShowQuestion(false);
-    }
-  };
-
-  // 찬스 버튼 클릭 시 카드 섞기
-  const handleShowChance = () => {
-    const shuffled = [...chanceCards].sort(() => 0.5 - Math.random());
-    setShuffledChanceCards(shuffled);
-    setShowChance(true);
-  };
-
-  // 찬스 카드 선택
-  const handleSelectChanceCard = (card: ChanceCard) => {
-    setSelectedChanceCard(card);
-  };
-
-  const handleAnswerA = () => handleAnswer('광주여성팀');
-  const handleAnswerB = () => handleAnswer('도그이어팀');
-
   const {
     book,
     month,
@@ -161,41 +80,92 @@ export default function BingoBoard() {
     correct_imageUrl,
     bonus,
   } = selectedQuestion || {};
-  // 빙고 체크 함수
-  const checkBingo = (cells: Map<number, '광주여성팀' | '도그이어팀'>) => {
-    const lines = [
-      [0, 1, 2, 3, 4],
-      [5, 6, 7, 8, 9],
-      [10, 11, 12, 13, 14],
-      [15, 16, 17, 18, 19],
-      [20, 21, 22, 23, 24], // 가로
-      [0, 5, 10, 15, 20],
-      [1, 6, 11, 16, 21],
-      [2, 7, 12, 17, 22],
-      [3, 8, 13, 18, 23],
-      [4, 9, 14, 19, 24], // 세로
-      [0, 6, 12, 18, 24],
-      [4, 8, 12, 16, 20], // 대각선
-    ];
 
-    for (const line of lines) {
-      const colors = line.map((i) => cells.get(i));
-      if (colors.every((color) => color === '광주여성팀')) {
-        setWinningTeam('광주여성팀');
-        setWinningLines([line]);
-        return;
+  const handleCellClick = useCallback((question: QuestionType) => {
+    setSelectedQuestion(question);
+    setShowAnswer(false);
+    setShowQuestion(false);
+    setSelectedAnswer(null);
+  }, []);
+
+  const handleShowAnswer = useCallback(
+    (key: string) => {
+      const numKey = parseInt(key);
+      setSelectedAnswer(numKey);
+      setShowAnswer(numKey === correct);
+    },
+    [correct],
+  );
+
+  const handleAnswer = useCallback(
+    (team: '광주여성팀' | '도그이어팀') => {
+      if (selectedQuestion) {
+        const questionIndex = questions.findIndex(
+          (q) => q.keyword === selectedQuestion.keyword,
+        );
+        if (questionIndex !== -1) {
+          setSelectedCells((prev) => {
+            const newMap = new Map(prev);
+            newMap.set(questionIndex, team);
+            checkBingo(newMap);
+            return newMap;
+          });
+        }
+        setSelectedQuestion(null);
+        setShowQuestion(false);
       }
-      if (colors.every((color) => color === '도그이어팀')) {
-        setWinningTeam('도그이어팀');
-        setWinningLines([line]);
-        return;
+    },
+    [selectedQuestion, questions],
+  );
+
+  const checkBingo = useCallback(
+    (cells: Map<number, '광주여성팀' | '도그이어팀'>) => {
+      const lines = [
+        [0, 1, 2, 3, 4],
+        [5, 6, 7, 8, 9],
+        [10, 11, 12, 13, 14],
+        [15, 16, 17, 18, 19],
+        [20, 21, 22, 23, 24], // 가로
+        [0, 5, 10, 15, 20],
+        [1, 6, 11, 16, 21],
+        [2, 7, 12, 17, 22],
+        [3, 8, 13, 18, 23],
+        [4, 9, 14, 19, 24], // 세로
+        [0, 6, 12, 18, 24],
+        [4, 8, 12, 16, 20], // 대각선
+      ];
+
+      for (const line of lines) {
+        const colors = line.map((i) => cells.get(i));
+        if (colors.every((color) => color === '광주여성팀')) {
+          setWinningTeam('광주여성팀');
+          setWinningLines([line]);
+          return;
+        }
+        if (colors.every((color) => color === '도그이어팀')) {
+          setWinningTeam('도그이어팀');
+          setWinningLines([line]);
+          return;
+        }
       }
-    }
+    },
+    [],
+  );
+
+  // 팀별 정답 클릭 시 호출
+  const handleShowChance = () => {
+    const shuffled = [...chanceCards].sort(() => 0.5 - Math.random());
+    setShuffledChanceCards(shuffled);
+    setShowChance(true);
   };
 
-  useEffect(() => {
-    checkBingo(selectedCells);
-  }, [selectedCells]);
+  // 찬스 카드 선택
+  const handleSelectChanceCard = (card: ChanceCard) => {
+    setSelectedChanceCard(card);
+  };
+
+  const handleAnswerA = () => handleAnswer('광주여성팀');
+  const handleAnswerB = () => handleAnswer('도그이어팀');
 
   const fireworkVariants = {
     hidden: {
@@ -216,6 +186,10 @@ export default function BingoBoard() {
       },
     }),
   };
+
+  const handleShowQuestion = useCallback(() => {
+    setShowQuestion(true);
+  }, []);
 
   return (
     <div className="w-full h-full bg-[url('/bg.png')] bg-no-repeat bg-center bg-cover min-h-screen p-8 relative flex flex-col items-center justify-center">
