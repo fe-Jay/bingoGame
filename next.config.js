@@ -2,14 +2,29 @@
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  // JSON 파일을 정적 자산으로 처리
+  // 정적 파일 처리 설정
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+      },
+    ];
+  },
+  // webpack 설정
   webpack: (config) => {
     config.module.rules.push({
       test: /\.json$/,
-      type: 'asset/resource'
+      type: 'json',
+      resolve: {
+        fallback: {
+          fs: false,
+          path: false,
+        },
+      },
     });
     return config;
-  }
+  },
 }
 
 module.exports = nextConfig 

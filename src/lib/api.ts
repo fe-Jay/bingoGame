@@ -19,19 +19,21 @@ export interface QuestionType {
 }
 
 export async function getQuestions(): Promise<QuestionType[]> {
-  // 현재 환경에 따라 base URL 설정
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 
-    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '');
-  
-  const res = await fetch(`${baseUrl}/api/api.json`, {
-    next: {
-      revalidate: 3600 // 1시간마다 재검증
+  try {
+    // 서버 사이드에서는 절대 경로로 파일 시스템에서 직접 읽기
+    if (typeof window === 'undefined') {
+      const questions = require('../../public/api/api.json');
+      return questions;
     }
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch questions');
+    
+    // 클라이언트 사이드에서는 fetch 사용
+    const res = await fetch('/api/api.json');
+    if (!res.ok) {
+      throw new Error('Failed to fetch questions');
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    return [];
   }
-
-  return res.json();
 }
