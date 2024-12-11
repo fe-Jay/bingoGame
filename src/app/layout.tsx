@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="font-gmarket relative">{children}</body>
+      <body className="font-gmarket overflow-hidden relative">{children}</body>
     </html>
   );
 }

@@ -38,6 +38,22 @@ interface Question {
   bonus?: boolean;
 }
 
+interface ChanceCard {
+  id: string;
+  description: string;
+}
+
+const chanceCards: ChanceCard[] = [
+  { id: 'chance1', description: '30초 \n휴대폰 검색 \n찬스' },
+  { id: 'chance2', description: '1분간 \n같은 팀 팀원과 상의하기 \n찬스' },
+  {
+    id: 'chance3',
+    description: '팀원 한 명과 \n 상의하기 \n찬스 \n(상대팀 지정)',
+  },
+  { id: 'chance4', description: '사회자 \nyes or no GPT \n찬스' },
+  { id: 'chance5', description: '보기 제거 \n찬스' },
+];
+
 // 데이터 fetch 함수
 async function getQuestions(): Promise<Question[]> {
   const res = await fetch('/api/api.json');
@@ -46,6 +62,7 @@ async function getQuestions(): Promise<Question[]> {
 }
 
 export default function BingoBoard() {
+  const [ready, setReady] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null,
@@ -53,15 +70,22 @@ export default function BingoBoard() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
   const [selectedCells, setSelectedCells] = useState<
-    Map<number, 'red' | 'green'>
+    Map<number, '광주여성팀' | '도그이어팀'>
   >(new Map());
-  const [winningTeam, setWinningTeam] = useState<'red' | 'green' | null>(null);
+  const [winningTeam, setWinningTeam] = useState<
+    '광주여성팀' | '도그이어팀' | null
+  >(null);
   const [winningLines, setWinningLines] = useState<number[][]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<string, number>
   >({});
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showChance, setShowChance] = useState(false);
+  const [selectedChanceCard, setSelectedChanceCard] =
+    useState<ChanceCard | null>(null);
+  const [shuffledChanceCards, setShuffledChanceCards] = useState<ChanceCard[]>(
+    [],
+  );
 
   useEffect(() => {
     getQuestions().then((data) => {
@@ -92,7 +116,7 @@ export default function BingoBoard() {
   };
 
   // 팀별 정답 클릭 시 호출
-  const handleAnswer = (team: 'red' | 'green') => {
+  const handleAnswer = (team: '광주여성팀' | '도그이어팀') => {
     if (selectedQuestion) {
       const questionIndex = questions.findIndex(
         (q) => q.keyword === selectedQuestion.keyword,
@@ -109,13 +133,20 @@ export default function BingoBoard() {
     }
   };
 
-  // 찬스 버튼 클릭 시 호출
+  // 찬스 버튼 클릭 시 카드 섞기
   const handleShowChance = () => {
+    const shuffled = [...chanceCards].sort(() => 0.5 - Math.random());
+    setShuffledChanceCards(shuffled);
     setShowChance(true);
   };
 
-  const handleAnswerA = () => handleAnswer('red');
-  const handleAnswerB = () => handleAnswer('green');
+  // 찬스 카드 선택
+  const handleSelectChanceCard = (card: ChanceCard) => {
+    setSelectedChanceCard(card);
+  };
+
+  const handleAnswerA = () => handleAnswer('광주여성팀');
+  const handleAnswerB = () => handleAnswer('도그이어팀');
 
   const {
     book,
@@ -131,7 +162,7 @@ export default function BingoBoard() {
     bonus,
   } = selectedQuestion || {};
   // 빙고 체크 함수
-  const checkBingo = (cells: Map<number, 'red' | 'green'>) => {
+  const checkBingo = (cells: Map<number, '광주여성팀' | '도그이어팀'>) => {
     const lines = [
       [0, 1, 2, 3, 4],
       [5, 6, 7, 8, 9],
@@ -149,13 +180,13 @@ export default function BingoBoard() {
 
     for (const line of lines) {
       const colors = line.map((i) => cells.get(i));
-      if (colors.every((color) => color === 'red')) {
-        setWinningTeam('red');
+      if (colors.every((color) => color === '광주여성팀')) {
+        setWinningTeam('광주여성팀');
         setWinningLines([line]);
         return;
       }
-      if (colors.every((color) => color === 'green')) {
-        setWinningTeam('green');
+      if (colors.every((color) => color === '도그이어팀')) {
+        setWinningTeam('도그이어팀');
         setWinningLines([line]);
         return;
       }
@@ -197,7 +228,7 @@ export default function BingoBoard() {
                 key={i}
                 custom={i}
                 className={`absolute w-4 h-4 ${
-                  winningTeam === 'red'
+                  winningTeam === '광주여성팀'
                     ? 'bg-green-500 hover:bg-green-600'
                     : 'bg-red-500 hover:bg-red-600'
                 }`}
@@ -219,16 +250,19 @@ export default function BingoBoard() {
               transition={{ type: 'spring', duration: 0.5 }}
             >
               <motion.div
-                className="text-8xl  text-white px-12 py-6 rounded-xl"
+                className="text-4xl lg:text-6xl !leading-[1.25] font-bold w-full max-w-[60vw] text-white px-12 py-12 rounded-2xl text-center opacity-95"
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ type: 'spring', bounce: 0.4 }}
                 style={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
                   backdropFilter: 'blur(8px)',
+                  backgroundColor:
+                    winningTeam === '광주여성팀' ? '#ed1c24' : '#00a14b',
                 }}
               >
-                {winningTeam === 'red' ? 'TEAM A 🧑‍🎄' : 'TEAM B 🎄'} BINGO!
+                <p>🎉</p>
+                {winningTeam === '광주여성팀' ? '광주여성팀' : '도그이어팀'}
+                <p>BINGO!</p>
               </motion.div>
             </motion.div>
           </>
@@ -270,9 +304,9 @@ export default function BingoBoard() {
                     flex items-center justify-center text-center font-bold text-lg md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
                     hover:scale-102
                     ${
-                      selectedCells.get(index) === 'red'
+                      selectedCells.get(index) === '광주여성팀'
                         ? 'bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#ff4d4d] before:to-[#cc0000] before:-z-10'
-                        : selectedCells.get(index) === 'green'
+                        : selectedCells.get(index) === '도그이어팀'
                           ? 'bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#00cc5e] before:to-[#004d29] before:-z-10'
                           : 'bg-gradient-to-b from-[#666666] to-black text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#000] before:to-[#111] before:-z-10'
                     }
@@ -296,6 +330,8 @@ export default function BingoBoard() {
               setShowAnswer(false);
               setShowQuestion(false);
               setSelectedAnswer(null);
+              setReady(false);
+              setShowChance(false);
             }
           }}
         >
@@ -372,9 +408,6 @@ export default function BingoBoard() {
                   <div className="flex-1">
                     <div className="space-y-6">
                       {/* 문제 보기 */}
-                      <DialogDescription className="text-2xl font-semibold">
-                        {question}
-                      </DialogDescription>
                       <div className="w-full h-full">
                         <Image
                           src={`/chance.svg`}
@@ -389,6 +422,10 @@ export default function BingoBoard() {
 
                       {!showAnswer ? (
                         <div className="space-y-6 text-center">
+                          <DialogDescription className="text-2xl font-semibold text-left leading-10">
+                            {question}
+                          </DialogDescription>
+
                           {/* 문제 이미지 */}
                           {answer && (
                             // 객관식 문항 보기
@@ -402,7 +439,13 @@ export default function BingoBoard() {
                                 return (
                                   <div
                                     key={key}
-                                    onClick={() => handleShowAnswer(key)}
+                                    onClick={() => {
+                                      if (!ready) {
+                                        setReady(true);
+                                      } else {
+                                        handleShowAnswer(key);
+                                      }
+                                    }}
                                     className={cn(
                                       `${!answer_imageUrl ? 'w-full rounded-full px-4 py-4' : 'w-1/3 py-4 pl-4 rounded-2xl'} flex-grow bg-white flex items-center gap-2 cursor-pointer transition-all duration-200  hover:shadow-black/50 hover:shadow-2xl`,
                                       isWrong &&
@@ -444,7 +487,7 @@ export default function BingoBoard() {
                                             'text-green-600',
                                         )}
                                       >
-                                        {value}
+                                        {ready ? value : '???'}
                                       </span>
                                     )}
                                   </div>
@@ -494,7 +537,7 @@ export default function BingoBoard() {
                                 alt={`${keyword} 이미지`}
                                 width={600}
                                 height={400}
-                                className="w-full max-h-[50vh]  mx-auto mb-4 rounded-lg object-contain"
+                                className="w-full max-h-[40vh] mx-auto mb-4 rounded-lg object-contain"
                                 priority={false}
                               />
                             )}
@@ -525,6 +568,60 @@ export default function BingoBoard() {
             )}
           </DialogContent>
         </Dialog>
+        {showChance && (
+          <Dialog
+            open={showChance}
+            onOpenChange={(open) => {
+              if (!open) {
+                setShowChance(false);
+                setSelectedChanceCard(null);
+              }
+            }}
+          >
+            <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-transparent p-8 z-50">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-center mb-8">
+                  <Image
+                    src={'/random-title.svg'}
+                    alt="chance random card"
+                    width={600}
+                    height={400}
+                    className="w-full max-w-4xl mx-auto mb-4"
+                    priority={false}
+                  />
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className="grid grid-cols-5 gap-4">
+                {shuffledChanceCards.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      onClick={() => handleSelectChanceCard(card)}
+                      className={cn(`
+                        w-full h-full text-[#001239] aspect-[280/378] bg-cover bg-center shadow-transparent relative
+                        ${selectedChanceCard?.id === card.id ? 'bg-[url("/random-card-front.svg")]' : 'bg-[url("/random-card-back.svg")]'}
+                      `)}
+                    >
+                      {selectedChanceCard?.id === card.id ? (
+                        <p className="text-xl whitespace-pre-wrap break-words">
+                          {card.description}
+                        </p>
+                      ) : (
+                        <p className="text-4xl font-bold absolute bottom-[25%]">
+                          {index + 1}
+                        </p>
+                      )}
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </section>
     </div>
   );
