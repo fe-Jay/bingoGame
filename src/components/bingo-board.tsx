@@ -309,6 +309,10 @@ export function BingoBoard({
             }
           }}
         >
+          <DialogDescription className="sr-only">
+            빙고 게임의 문제와 답을 확인하고 팀별로 정답을 선택할 수 있는
+            대화상자입니다.
+          </DialogDescription>
           <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-gradient-to-b from-white/80 from-0% via-gray-300/80 via-60% to-white to-100% backdrop-blur-[80px] border border-white/20 rounded-[40px] p-8">
             {bonus && bonus ? (
               <div className="flex-shrink-0 w-full text-center">
@@ -351,14 +355,18 @@ export function BingoBoard({
                         {month}
                       </div>
                       <div className="mt-4">
-                        <Image
-                          src={`/book/${imageUrl}`}
-                          alt={`${keyword} 이미지`}
-                          width={400}
-                          height={200}
-                          className="w-full max-w-24 sm:max-w-48 mx-auto rounded-lg object-cover"
-                          priority={false}
-                        />
+                        {imageUrl ? (
+                          <Image
+                            src={`/book/${imageUrl}`}
+                            alt={`${keyword} 이미지`}
+                            width={400}
+                            height={200}
+                            className="w-full max-w-48 h-auto mx-auto rounded-lg object-cover"
+                            priority={false}
+                          />
+                        ) : (
+                          <div className="w-full h-48 bg-gray-200 rounded-lg animate-pulse" />
+                        )}
                       </div>
                       <p className="text-lg font-bold text-center">{book}</p>
                     </DialogTitle>
@@ -373,7 +381,8 @@ export function BingoBoard({
                       alt="문제 확인"
                       width={300}
                       height={400}
-                      className="cursor-pointer hover:scale-105 transition-transform"
+                      className="w-[300px] h-[400px] cursor-pointer hover:scale-105 transition-transform"
+                      priority={false}
                     />
                   </div>
                 )}
@@ -384,12 +393,12 @@ export function BingoBoard({
                       {/* 문제 보기 */}
                       <div className="w-full h-full">
                         <Image
-                          src={`/chance.svg`}
+                          src="/chance.svg"
                           alt="찬스 버튼"
                           width={160}
                           height={160}
-                          className="absolute top-[-60px] right-[-60px] animate-bounce duration-[30s] linear infinite"
                           onClick={handleShowChance}
+                          className="absolute top-[-60px] right-[-60px] w-40 h-40 cursor-pointer animate-bounce duration-[30000ms] linear infinite"
                           priority={false}
                         />
                       </div>
@@ -552,6 +561,9 @@ export function BingoBoard({
               }
             }}
           >
+            <DialogDescription className="sr-only">
+              랜덤 찬스 카드 선택.
+            </DialogDescription>
             <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-transparent p-8 z-50">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-center mb-8">
@@ -559,8 +571,8 @@ export function BingoBoard({
                     src={'/random-title.svg'}
                     alt="chance random card"
                     width={600}
-                    height={400}
-                    className="w-full max-w-4xl mx-auto mb-4"
+                    height={200}
+                    className="w-3xl h-[200px] mx-auto"
                     priority={false}
                   />
                 </DialogTitle>
