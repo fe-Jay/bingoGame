@@ -313,7 +313,7 @@ export function BingoBoard({
             빙고 게임의 문제와 답을 확인하고 팀별로 정답을 선택할 수 있는
             대화상자입니다.
           </DialogDescription>
-          <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-gradient-to-b from-white/80 from-0% via-gray-300/80 via-60% to-white to-100% backdrop-blur-[80px] border border-white/20 rounded-[40px] p-8">
+          <DialogContent className="max-w-[90vw] md:max-w-[1240px] bg-gradient-to-b from-white/80 from-0% via-gray-300/80 via-60% to-white to-100% backdrop-blur-[80px] border border-white/20 rounded-[40px] p-8">
             {bonus && bonus ? (
               <div className="flex-shrink-0 w-full text-center">
                 <DialogHeader>
@@ -346,12 +346,12 @@ export function BingoBoard({
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col md:flex-row gap-8">
+              <div className="flex flex-col md:flex-row gap-8 items-center">
                 {/* 왼쪽: 책 정보 */}
-                <div className="flex-shrink-0 w-[40%] max-w-[320px] text-center">
+                <div className="flex-shrink-0 w-[40%] max-w-[400px] text-center">
                   <DialogHeader className="mb-6">
                     <DialogTitle className="flex flex-col items-center gap-4">
-                      <div className="bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full text-white px-8 py-3 block text-center">
+                      <div className="bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full text-white px-8 py-3 block text-center text-xl">
                         {month}
                       </div>
                       <div className="mt-4">
@@ -361,14 +361,14 @@ export function BingoBoard({
                             alt={`${keyword} 이미지`}
                             width={400}
                             height={200}
-                            className="w-full max-w-48 h-auto mx-auto rounded-lg object-cover"
+                            className="w-full max-w-56 h-auto mx-auto rounded-lg object-cover"
                             priority={false}
                           />
                         ) : (
                           <div className="w-full h-48 bg-gray-200 rounded-lg animate-pulse" />
                         )}
                       </div>
-                      <p className="text-lg font-bold text-center">{book}</p>
+                      <p className="text-xl font-bold text-center">{book}</p>
                     </DialogTitle>
                   </DialogHeader>
                 </div>
@@ -388,147 +388,97 @@ export function BingoBoard({
                 )}
                 {/* 오른쪽: 문제 답안 */}
                 {showQuestion && (
-                  <div className="flex-1">
-                    <div className="space-y-6">
-                      {/* 문제 보기 */}
-                      <div className="w-full h-full">
-                        <Image
-                          src="/chance.svg"
-                          alt="찬스 버튼"
-                          width={160}
-                          height={160}
-                          onClick={handleShowChance}
-                          className="absolute top-[-60px] right-[-60px] w-40 h-40 cursor-pointer animate-bounce duration-[30000ms] linear infinite"
-                          priority={false}
-                        />
-                      </div>
+                  <div className="flex-1 flex flex-col items-stretch h-full">
+                    {/* 문제 보기 */}
+                    <Image
+                      src="/chance.svg"
+                      alt="찬스 버튼"
+                      width={160}
+                      height={160}
+                      onClick={handleShowChance}
+                      className="absolute top-[-60px] right-[-60px] w-40 h-40 cursor-pointer animate-bounce duration-[30000ms] linear infinite"
+                      priority={false}
+                    />
 
-                      {!showAnswer ? (
-                        <div className="space-y-6 text-center">
-                          <DialogDescription className="text-2xl font-semibold text-left leading-10">
-                            {question}
-                          </DialogDescription>
+                    {!showAnswer ? (
+                      <div className="space-y-6 text-center">
+                        <DialogDescription className="text-3xl font-semibold text-left leading-10">
+                          {question}
+                        </DialogDescription>
 
-                          {/* 문제 이미지 */}
-                          {answer && (
-                            // 객관식 문항 보기
-                            <div className="flex items-center flex-wrap gap-4">
-                              {Object.entries(answer).map(([key, value]) => {
-                                const isSelected =
-                                  selectedAnswer === parseInt(key);
-                                const isWrong =
-                                  isSelected && parseInt(key) !== correct;
+                        {/* 문제 이미지 */}
+                        {answer && (
+                          // 객관식 문항 보기
+                          <div className="flex items-center flex-wrap gap-4">
+                            {Object.entries(answer).map(([key, value]) => {
+                              const isSelected =
+                                selectedAnswer === parseInt(key);
+                              const isWrong =
+                                isSelected && parseInt(key) !== correct;
 
-                                return (
-                                  <div
-                                    key={key}
-                                    onClick={() => {
-                                      if (!ready) {
-                                        setReady(true);
-                                      } else {
-                                        handleShowAnswer(key);
-                                      }
-                                    }}
+                              return (
+                                <div
+                                  key={key}
+                                  onClick={() => {
+                                    if (!ready) {
+                                      setReady(true);
+                                    } else {
+                                      handleShowAnswer(key);
+                                    }
+                                  }}
+                                  className={cn(
+                                    `${!answer_imageUrl ? 'w-full rounded-full px-4 py-4' : 'w-1/3 py-4 pl-4 rounded-2xl'} flex-grow bg-white flex items-center gap-2 cursor-pointer transition-all duration-200  hover:shadow-black/50 hover:shadow-2xl`,
+                                    isWrong &&
+                                      'bg-red-100 border-2 border-red-500',
+                                    isSelected &&
+                                      parseInt(key) === correct &&
+                                      'bg-green-100 border-2 border-green-500',
+                                  )}
+                                >
+                                  <span
                                     className={cn(
-                                      `${!answer_imageUrl ? 'w-full rounded-full px-4 py-4' : 'w-1/3 py-4 pl-4 rounded-2xl'} flex-grow bg-white flex items-center gap-2 cursor-pointer transition-all duration-200  hover:shadow-black/50 hover:shadow-2xl`,
-                                      isWrong &&
-                                        'bg-red-100 border-2 border-red-500',
-                                      isSelected &&
-                                        parseInt(key) === correct &&
-                                        'bg-green-100 border-2 border-green-500',
+                                      'flex-shrink-0 w-8 h-8 rounded-full inline-flex items-center justify-center text-white',
+                                      isWrong
+                                        ? 'bg-gradient-to-b from-red-500 to-red-700'
+                                        : isSelected &&
+                                            parseInt(key) === correct
+                                          ? 'bg-gradient-to-b from-green-500 to-green-700'
+                                          : 'bg-gradient-to-b from-[#00226e] to-[#001239]',
                                     )}
                                   >
+                                    {key}
+                                  </span>
+                                  {answer_imageUrl ? (
+                                    <Image
+                                      src={`/api/11_0${key}.jpg`}
+                                      alt={`${keyword} 이미지`}
+                                      width={400}
+                                      height={200}
+                                      className="w-full max-w-24 sm:max-w-48 mx-auto rounded-2xl object-cover"
+                                      priority={false}
+                                    />
+                                  ) : (
                                     <span
                                       className={cn(
-                                        'flex-shrink-0 w-8 h-8 rounded-full inline-flex items-center justify-center text-white',
-                                        isWrong
-                                          ? 'bg-gradient-to-b from-red-500 to-red-700'
-                                          : isSelected &&
-                                              parseInt(key) === correct
-                                            ? 'bg-gradient-to-b from-green-500 to-green-700'
-                                            : 'bg-gradient-to-b from-[#00226e] to-[#001239]',
+                                        'text-xl flex-grow',
+                                        isWrong && 'text-red-600',
+                                        isSelected &&
+                                          parseInt(key) === correct &&
+                                          'text-green-600',
                                       )}
                                     >
-                                      {key}
+                                      {ready ? value : '???'}
                                     </span>
-                                    {answer_imageUrl ? (
-                                      <Image
-                                        src={`/api/11_0${key}.jpg`}
-                                        alt={`${keyword} 이미지`}
-                                        width={400}
-                                        height={200}
-                                        className="w-full max-w-24 sm:max-w-48 mx-auto rounded-2xl object-cover"
-                                        priority={false}
-                                      />
-                                    ) : (
-                                      <span
-                                        className={cn(
-                                          'text-xl flex-grow',
-                                          isWrong && 'text-red-600',
-                                          isSelected &&
-                                            parseInt(key) === correct &&
-                                            'text-green-600',
-                                        )}
-                                      >
-                                        {ready ? value : '???'}
-                                      </span>
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-
-                          {answer === null && (
-                            <div className="grid grid-cols-2 gap-4">
-                              {/* 정답 버튼 보기 */}
-                              <Button
-                                onClick={handleAnswerA}
-                                className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
-                              >
-                                광주여성팀 정답
-                              </Button>
-                              <Button
-                                onClick={handleAnswerB}
-                                className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
-                              >
-                                도그이어팀 정답
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="space-y-6 flex flex-col items-center flex-grow">
-                          {/* 정답 보기 */}
-                          <div className="w-full p-4 bg-white rounded-[50px] shadow flex items-center gap-2">
-                            <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full inline-flex items-center justify-center text-white">
-                              {correct}
-                            </span>
-                            {answer && correct && (
-                              <span className="text-lg text-center flex-grow">
-                                {answer[correct as keyof typeof answer]}
-                              </span>
-                            )}
+                                  )}
+                                </div>
+                              );
+                            })}
                           </div>
+                        )}
 
-                          {/* 문제 해설 */}
-                          <div className="text-left w-full flex-grow">
-                            {/* 정답 이미지 */}
-                            {correct_imageUrl && (
-                              <Image
-                                src={`/api/${correct_imageUrl}`}
-                                alt={`${keyword} 이미지`}
-                                width={600}
-                                height={400}
-                                className="w-full max-h-[40vh] mx-auto mb-4 rounded-lg object-contain"
-                                priority={false}
-                              />
-                            )}
-                            <p>{Comment}</p>
-                          </div>
-
-                          {/* 정답 버튼 보기 */}
+                        {answer === null && (
                           <div className="grid grid-cols-2 gap-4">
+                            {/* 정답 버튼 보기 */}
                             <Button
                               onClick={handleAnswerA}
                               className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
@@ -542,9 +492,55 @@ export function BingoBoard({
                               도그이어팀 정답
                             </Button>
                           </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-6 flex flex-col items-center flex-grow">
+                        {/* 정답 보기 */}
+                        <div className="w-full p-4 bg-white rounded-[50px] shadow flex items-center gap-2">
+                          <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full inline-flex items-center justify-center text-white">
+                            {correct}
+                          </span>
+                          {answer && correct && (
+                            <span className="text-lg text-center flex-grow">
+                              {answer[correct as keyof typeof answer]}
+                            </span>
+                          )}
                         </div>
-                      )}
-                    </div>
+
+                        {/* 문제 해설 */}
+                        <div className="text-left w-full flex-grow">
+                          {/* 정답 이미지 */}
+                          {correct_imageUrl && (
+                            <Image
+                              src={`/api/${correct_imageUrl}`}
+                              alt={`${keyword} 이미지`}
+                              width={600}
+                              height={400}
+                              className="w-full max-h-[40vh] mx-auto mb-4 rounded-lg object-contain"
+                              priority={false}
+                            />
+                          )}
+                          <p>{Comment}</p>
+                        </div>
+
+                        {/* 정답 버튼 보기 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <Button
+                            onClick={handleAnswerA}
+                            className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
+                          >
+                            광주여성팀 정답
+                          </Button>
+                          <Button
+                            onClick={handleAnswerB}
+                            className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
+                          >
+                            도그이어팀 정답
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
