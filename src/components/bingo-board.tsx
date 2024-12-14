@@ -86,6 +86,8 @@ export function BingoBoard({
     setShowAnswer(false);
     setShowQuestion(false);
     setSelectedAnswer(null);
+    setReady(false);
+    setShowChance(false);
   }, []);
 
   const handleShowAnswer = useCallback(
