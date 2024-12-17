@@ -37,7 +37,7 @@ const chanceCards: ChanceCard[] = [
     description: '팀원 한 명과 \n 상의하기 \n찬스 \n(상대팀 지정)',
   },
   { id: 'chance4', description: '사회자 \nyes or no GPT \n찬스' },
-  { id: 'chance5', description: '보기 제���� \n찬스' },
+  { id: 'chance5', description: '보기 제거 \n찬스' },
 ];
 
 interface BingoBoardProps {
@@ -476,7 +476,7 @@ export function BingoBoard({
 
                         {/* 문제 이미지 */}
                         {answer && (
-                          // ���관식 문항 보기
+                          // 객관식 문항 보기
                           <div className="flex items-center flex-wrap gap-2 md:gap-4">
                             {Object.entries(answer).map(([key, value]) => {
                               const isSelected =
