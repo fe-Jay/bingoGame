@@ -258,7 +258,7 @@ export function BingoBoard({
         )}
       </AnimatePresence>
 
-      <section className="max-w-screen-2xl w-full mx-auto z-10 px-4 md:px-8 relative pb-20 lg:pb-0pb-0pb-0">
+      <section className="max-w-screen-2xl w-full mx-auto z-10 px-4 md:px-8 relative pb-20 lg:pb-0">
         <h1 className="sr-only">도그이어 빙고 게임</h1>
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
           {/* 로고 */}
