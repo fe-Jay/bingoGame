@@ -24,6 +24,11 @@ interface ChanceCard {
   description: string;
 }
 
+const URL = {
+  LINKTREE: 'https://linktr.ee/dogearbook',
+  INSTAGRAM: 'https://www.instagram.com/dog_ear_book/',
+};
+
 const chanceCards: ChanceCard[] = [
   { id: 'chance1', description: '30초 \n휴대폰 검색 \n찬스' },
   { id: 'chance2', description: '1분간 \n같은 팀 팀원과 상의하기 \n찬스' },
@@ -39,6 +44,19 @@ interface BingoBoardProps {
   initialQuestions: QuestionType[];
 }
 
+const TEAMS = {
+  RED: '레드팀',
+  GREEN: '그린팀',
+} as const;
+
+type BingoTeam = (typeof TEAMS)[keyof typeof TEAMS];
+const TEAM_STYLES = {
+  [TEAMS.RED]:
+    'bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#ff4d4d] before:to-[#cc0000] before:-z-10',
+  [TEAMS.GREEN]:
+    'bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#00cc5e] before:to-[#004d29] before:-z-10',
+} as const;
+
 export function BingoBoard({
   initialQuestions,
 }: BingoBoardProps): ReactElement {
@@ -49,12 +67,10 @@ export function BingoBoard({
   );
   const [showAnswer, setShowAnswer] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
-  const [selectedCells, setSelectedCells] = useState<
-    Map<number, '광주여성팀' | '도그이어팀'>
-  >(new Map());
-  const [winningTeam, setWinningTeam] = useState<
-    '광주여성팀' | '도그이어팀' | null
-  >(null);
+  const [selectedCells, setSelectedCells] = useState<Map<number, BingoTeam>>(
+    new Map(),
+  );
+  const [winningTeam, setWinningTeam] = useState<BingoTeam | null>(null);
   const [winningLines, setWinningLines] = useState<number[][]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<string, number>
@@ -100,7 +116,7 @@ export function BingoBoard({
   );
 
   const handleAnswer = useCallback(
-    (team: '광주여성팀' | '도그이어팀') => {
+    (team: BingoTeam) => {
       if (selectedQuestion) {
         const questionIndex = questions.findIndex(
           (q) => q.keyword === selectedQuestion.keyword,
@@ -120,39 +136,36 @@ export function BingoBoard({
     [selectedQuestion, questions],
   );
 
-  const checkBingo = useCallback(
-    (cells: Map<number, '광주여성팀' | '도그이어팀'>) => {
-      const lines = [
-        [0, 1, 2, 3, 4],
-        [5, 6, 7, 8, 9],
-        [10, 11, 12, 13, 14],
-        [15, 16, 17, 18, 19],
-        [20, 21, 22, 23, 24], // 가로
-        [0, 5, 10, 15, 20],
-        [1, 6, 11, 16, 21],
-        [2, 7, 12, 17, 22],
-        [3, 8, 13, 18, 23],
-        [4, 9, 14, 19, 24], // 세로
-        [0, 6, 12, 18, 24],
-        [4, 8, 12, 16, 20], // 대각선
-      ];
+  const checkBingo = useCallback((cells: Map<number, BingoTeam>) => {
+    const lines = [
+      [0, 1, 2, 3, 4],
+      [5, 6, 7, 8, 9],
+      [10, 11, 12, 13, 14],
+      [15, 16, 17, 18, 19],
+      [20, 21, 22, 23, 24], // 가로
+      [0, 5, 10, 15, 20],
+      [1, 6, 11, 16, 21],
+      [2, 7, 12, 17, 22],
+      [3, 8, 13, 18, 23],
+      [4, 9, 14, 19, 24], // 세로
+      [0, 6, 12, 18, 24],
+      [4, 8, 12, 16, 20], // 대각선
+    ];
 
-      for (const line of lines) {
-        const colors = line.map((i) => cells.get(i));
-        if (colors.every((color) => color === '광주여성팀')) {
-          setWinningTeam('광주여성팀');
-          setWinningLines([line]);
-          return;
-        }
-        if (colors.every((color) => color === '도그이어팀')) {
-          setWinningTeam('도그이어팀');
-          setWinningLines([line]);
-          return;
-        }
+    for (const line of lines) {
+      const colors = line.map((i) => cells.get(i));
+      if (colors.every((color) => color === TEAMS.RED)) {
+        setWinningTeam(TEAMS.RED);
+        setWinningLines([line]);
+        return;
       }
-    },
-    [],
-  );
+      if (colors.every((color) => color === TEAMS.GREEN)) {
+        setWinningTeam(TEAMS.GREEN);
+        setWinningLines([line]);
+        return;
+      }
+    }
+  }, []);
 
   // 팀별 정답 클릭 시 호출
   const handleShowChance = () => {
@@ -166,8 +179,8 @@ export function BingoBoard({
     setSelectedChanceCard(card);
   };
 
-  const handleAnswerA = () => handleAnswer('광주여성팀');
-  const handleAnswerB = () => handleAnswer('도그이어팀');
+  const handleAnswerA = () => handleAnswer(TEAMS.RED);
+  const handleAnswerB = () => handleAnswer(TEAMS.GREEN);
 
   const fireworkVariants = {
     hidden: {
@@ -204,7 +217,7 @@ export function BingoBoard({
                 key={i}
                 custom={i}
                 className={`absolute w-4 h-4 ${
-                  winningTeam === '광주여성팀'
+                  winningTeam === TEAMS.RED
                     ? 'bg-green-500 hover:bg-green-600'
                     : 'bg-red-500 hover:bg-red-600'
                 }`}
@@ -233,11 +246,11 @@ export function BingoBoard({
                 style={{
                   backdropFilter: 'blur(8px)',
                   backgroundColor:
-                    winningTeam === '광주여성팀' ? '#ed1c24' : '#00a14b',
+                    winningTeam === TEAMS.RED ? '#ed1c24' : '#00a14b',
                 }}
               >
                 <p>🎉</p>
-                {winningTeam === '광주여성팀' ? '광주여성팀' : '도그이어팀'}
+                {winningTeam === TEAMS.RED ? TEAMS.RED : TEAMS.GREEN}
                 <p>BINGO!</p>
               </motion.div>
             </motion.div>
@@ -249,15 +262,56 @@ export function BingoBoard({
         <h1 className="sr-only">도그이어 빙고 게임</h1>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* 로고 */}
-          <div className="flex items-center w-1/2">
+          <div className="flex items-center w-1/2 relative">
             <Image
               src="/cover.svg"
               alt="cover"
               width={200}
               height={200}
-              className="w-full mx-auto"
+              className="w-full mx-auto animate-float"
               priority
             />
+            <div className="w-full px-6 absolute bottom-0 right-0 flex items-center gap-2 justify-between">
+              <span className="text-xs text-white/60">
+                © 2024 <a href={URL.INSTAGRAM}>DOGEAR</a>. All rights reserved.
+              </span>
+              <div className="flex items-center gap-2">
+                <a
+                  href={URL.LINKTREE}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path d="M7.5 21.5h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm0-13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm13 13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm0-13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1z" />
+                  </svg>
+                </a>
+                <a
+                  href={URL.INSTAGRAM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* 빙고 게임 보드 */}
@@ -280,10 +334,10 @@ export function BingoBoard({
                     flex items-center justify-center text-center font-bold text-lg md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
                     hover:scale-102
                     ${
-                      selectedCells.get(index) === '광주여성팀'
-                        ? 'bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#ff4d4d] before:to-[#cc0000] before:-z-10'
-                        : selectedCells.get(index) === '도그이어팀'
-                          ? 'bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#00cc5e] before:to-[#004d29] before:-z-10'
+                      selectedCells.get(index) === TEAMS.RED
+                        ? TEAM_STYLES[TEAMS.RED]
+                        : selectedCells.get(index) === TEAMS.GREEN
+                          ? TEAM_STYLES[TEAMS.GREEN]
                           : 'bg-gradient-to-b from-[#666666] to-black text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#000] before:to-[#111] before:-z-10'
                     }
                     ${winningLines.flat().includes(index) ? 'animate-pulse' : ''}
@@ -337,13 +391,13 @@ export function BingoBoard({
                     onClick={handleAnswerA}
                     className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
                   >
-                    광주여성팀 정답
+                    {TEAMS.RED} 정답
                   </Button>
                   <Button
                     onClick={handleAnswerB}
                     className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
                   >
-                    도그이어팀 정답
+                    {TEAMS.GREEN} 정답
                   </Button>
                 </div>
               </div>
@@ -485,13 +539,13 @@ export function BingoBoard({
                               onClick={handleAnswerA}
                               className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
                             >
-                              광주여성팀 정답
+                              {TEAMS.RED} 정답
                             </Button>
                             <Button
                               onClick={handleAnswerB}
                               className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
                             >
-                              도그이어팀 정답
+                              {TEAMS.GREEN} 정답
                             </Button>
                           </div>
                         )}
@@ -532,13 +586,13 @@ export function BingoBoard({
                             onClick={handleAnswerA}
                             className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
                           >
-                            광주여성팀 정답
+                            {TEAMS.RED} 정답
                           </Button>
                           <Button
                             onClick={handleAnswerB}
                             className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
                           >
-                            도그이어팀 정답
+                            {TEAMS.GREEN} 정답
                           </Button>
                         </div>
                       </div>
