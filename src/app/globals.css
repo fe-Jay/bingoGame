@@ -36,51 +36,53 @@
     font-family: 'Black Han Sans', sans-serif;
   }
 
-  body::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 240px;
-    height: 180px;
-    background: url('/Vector-2.svg') no-repeat bottom right/contain;
-    z-index: 20;
-  }
+  @media (min-width: 768px) {
+    body::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 240px;
+      height: 180px;
+      background: url('/Vector-2.svg') no-repeat bottom right/contain;
+      z-index: 20;
+    }
 
-  body::before {
-    content: '';
-    position: absolute;
-    left: 36%;
-    top: 8%;
-    width: 40px;
-    height: 40px;
-    background: url('/Vector-4.svg') no-repeat center/cover;
-    z-index: 20;
-  }
+    body::before {
+      content: '';
+      position: absolute;
+      left: 36%;
+      top: 8%;
+      width: 40px;
+      height: 40px;
+      background: url('/Vector-4.svg') no-repeat center/cover;
+      z-index: 20;
+    }
 
-  div[data-type='bingo-board'] {
-    position: relative;
-  }
+    div[data-type='bingo-board'] {
+      position: relative;
+    }
 
-  div[data-type='bingo-board']::after {
-    content: '';
-    position: absolute;
-    right: -50px;
-    top: -50px;
-    width: 100px;
-    height: 100px;
-    background: url('/Vector-1.svg') no-repeat center/cover;
-    z-index: 1;
-  }
+    div[data-type='bingo-board']::after {
+      content: '';
+      position: absolute;
+      right: -50px;
+      top: -50px;
+      width: 100px;
+      height: 100px;
+      background: url('/Vector-1.svg') no-repeat center/cover;
+      z-index: 1;
+    }
 
-  div[data-type='bingo-board']::before {
-    content: '';
-    position: absolute;
-    left: 58%;
-    top: 50%;
-    width: 40px;
-    height: 80px;
-    background: url('/Vector-3.svg') no-repeat center/contain;
-    z-index: 1;
+    div[data-type='bingo-board']::before {
+      content: '';
+      position: absolute;
+      left: 58%;
+      top: 50%;
+      width: 40px;
+      height: 80px;
+      background: url('/Vector-3.svg') no-repeat center/contain;
+      z-index: 1;
+    }
   }
 }

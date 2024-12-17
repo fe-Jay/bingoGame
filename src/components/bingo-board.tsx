@@ -37,7 +37,7 @@ const chanceCards: ChanceCard[] = [
     description: '팀원 한 명과 \n 상의하기 \n찬스 \n(상대팀 지정)',
   },
   { id: 'chance4', description: '사회자 \nyes or no GPT \n찬스' },
-  { id: 'chance5', description: '보기 제거 \n찬스' },
+  { id: 'chance5', description: '보기 제���� \n찬스' },
 ];
 
 interface BingoBoardProps {
@@ -52,9 +52,9 @@ const TEAMS = {
 type BingoTeam = (typeof TEAMS)[keyof typeof TEAMS];
 const TEAM_STYLES = {
   [TEAMS.RED]:
-    'bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#ff4d4d] before:to-[#cc0000] before:-z-10',
+    'bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[20px] text-white before:absolute md:before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#ff4d4d] before:to-[#cc0000] before:-z-10',
   [TEAMS.GREEN]:
-    'bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[20px] text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#00cc5e] before:to-[#004d29] before:-z-10',
+    'bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[20px] text-white before:absolute md:before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#00cc5e] before:to-[#004d29] before:-z-10',
 } as const;
 
 export function BingoBoard({
@@ -207,7 +207,7 @@ export function BingoBoard({
   }, []);
 
   return (
-    <div className="w-full h-full bg-[url('/bg.png')] bg-no-repeat bg-center bg-cover min-h-screen p-8 relative flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-[url('/bg.png')] bg-no-repeat bg-center bg-cover min-h-screen p-2 lg:p-8 relative flex flex-col items-center justify-center">
       <AnimatePresence>
         {winningTeam && (
           <>
@@ -258,22 +258,29 @@ export function BingoBoard({
         )}
       </AnimatePresence>
 
-      <section className="max-w-screen-2xl w-full mx-auto relative z-10">
+      <section className="max-w-screen-2xl w-full mx-auto z-10 px-4 md:px-8 relative pb-20 lg:pb-0pb-0pb-0">
         <h1 className="sr-only">도그이어 빙고 게임</h1>
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
           {/* 로고 */}
-          <div className="flex items-center w-1/2 relative">
+          <div className="flex items-center w-1/2 mx-auto lg:relative">
             <Image
               src="/cover.svg"
               alt="cover"
               width={200}
               height={200}
-              className="w-full mx-auto animate-float"
+              className="w-full max-w-[300px] md:max-w-[400px] mx-auto animate-float"
               priority
             />
-            <div className="w-full px-6 absolute bottom-0 right-0 flex items-center gap-2 justify-between">
-              <span className="text-xs text-white/60">
-                © 2024 <a href={URL.INSTAGRAM}>DOGEAR</a>. All rights reserved.
+            <div className="w-full md:px-2 lg:px-6 absolute bottom-0 right-0 flex flex-col md:flex-row items-center gap-2 justify-between">
+              <span className="text-[10px] md:text-xs text-white/60">
+                © 2024{' '}
+                <a
+                  href={URL.INSTAGRAM}
+                  className="hover:text-white transition-colors"
+                >
+                  DOGEAR
+                </a>
+                . All rights reserved.
               </span>
               <div className="flex items-center gap-2">
                 <a
@@ -288,7 +295,7 @@ export function BingoBoard({
                     height="16"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-4 h-4"
+                    className="w-3 h-3 md:w-4 md:h-4"
                   >
                     <path d="M7.5 21.5h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm0-13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm13 13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm0-13h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1z" />
                   </svg>
@@ -305,7 +312,7 @@ export function BingoBoard({
                     height="16"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-4 h-4"
+                    className="w-3 h-3 md:w-4 md:h-4"
                   >
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                   </svg>
@@ -316,14 +323,14 @@ export function BingoBoard({
 
           {/* 빙고 게임 보드 */}
           <div
-            className="grid grid-cols-5 gap-4 w-full"
+            className="grid grid-cols-5 gap-1 sm:gap-2 md:gap-4 w-full"
             data-type="bingo-board"
           >
             {questions.map((question, index) => (
               <motion.div
                 className="relative aspect-[4/3]"
                 key={`${question.keyword}-${index}`}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Button
@@ -331,14 +338,15 @@ export function BingoBoard({
                   className={cn(`
                     relative
                     w-full h-full p-0
-                    flex items-center justify-center text-center font-bold text-lg md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
+                    flex items-center justify-center text-center font-bold
+                    text-sm sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl
                     hover:scale-102
                     ${
                       selectedCells.get(index) === TEAMS.RED
                         ? TEAM_STYLES[TEAMS.RED]
                         : selectedCells.get(index) === TEAMS.GREEN
                           ? TEAM_STYLES[TEAMS.GREEN]
-                          : 'bg-gradient-to-b from-[#666666] to-black text-white before:absolute before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#000] before:to-[#111] before:-z-10'
+                          : 'bg-gradient-to-b from-[#666666] to-black text-white before:absolute before:inset-[-2px] sm:before:inset-[-3px] md:before:inset-[-4px] before:rounded-[20px] before:bg-gradient-to-b before:from-[#000] before:to-[#111] before:-z-10'
                     }
                     ${winningLines.flat().includes(index) ? 'animate-pulse' : ''}
                     rounded-[20px]
@@ -369,7 +377,7 @@ export function BingoBoard({
             빙고 게임의 문제와 답을 확인하고 팀별로 정답을 선택할 수 있는
             대화상자입니다.
           </DialogDescription>
-          <DialogContent className="max-w-[90vw] md:max-w-[1240px] bg-gradient-to-b from-white/80 from-0% via-gray-300/80 via-60% to-white to-100% backdrop-blur-[80px] border border-white/20 rounded-[40px] p-8">
+          <DialogContent className="max-w-[90vw] md:max-w-[1240px] bg-gradient-to-b from-white/80 from-0% via-gray-300/80 via-60% to-white to-100% backdrop-blur-[80px] border border-white/20 rounded-[20px] md:rounded-[40px] p-4 md:p-8">
             {bonus && bonus ? (
               <div className="flex-shrink-0 w-full text-center">
                 <DialogHeader>
@@ -381,53 +389,56 @@ export function BingoBoard({
                     className="w-full max-w-xl mx-auto rounded-lg object-cover"
                     priority={false}
                   />
-                  <DialogTitle className="flex flex-col items-center gap-4 text-red-600 text-4xl font-bold">
+                  <DialogTitle className="flex flex-col items-center gap-4 text-2xl md:text-4xl font-bold text-red-600">
                     기쁨의 환호를 질러주세요!
                   </DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto mt-8">
+                <div className="grid grid-cols-2 gap-2 md:gap-4 max-w-2xl mx-auto mt-4 md:mt-8">
                   {/* 정답 버튼 보기 */}
                   <Button
                     onClick={handleAnswerA}
-                    className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
+                    className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[30px] md:rounded-[50px]"
                   >
                     {TEAMS.RED} 정답
                   </Button>
                   <Button
                     onClick={handleAnswerB}
-                    className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
+                    className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[30px] md:rounded-[50px]"
                   >
                     {TEAMS.GREEN} 정답
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col md:flex-row gap-8 items-center">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center">
                 {/* 왼쪽: 책 정보 */}
-                <div className="flex-shrink-0 w-[40%] max-w-[400px] text-center">
-                  <DialogHeader className="mb-6">
-                    <DialogTitle className="flex flex-col items-center gap-4">
-                      <div className="bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full text-white px-8 py-3 block text-center text-xl">
+                <div className="flex-shrink-0 w-full md:w-[40%] max-w-[400px] text-center">
+                  <DialogHeader className="mb-4 md:mb-6">
+                    <DialogTitle className="flex flex-col items-center gap-2 md:gap-4">
+                      <div className="bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full text-white px-4 md:px-8 py-2 md:py-3 block text-center text-base md:text-xl">
                         {month}
                       </div>
-                      <div className="mt-4">
+                      <div className="mt-2 md:mt-4">
                         {imageUrl ? (
                           <Image
                             src={`/book/${imageUrl}`}
                             alt={`${keyword} 이미지`}
                             width={400}
                             height={200}
-                            className="w-full max-w-56 h-auto mx-auto rounded-lg object-cover"
+                            className="w-full max-w-24 hidden md:block md:max-w-56 h-auto mx-auto rounded-lg object-cover"
                             priority={false}
                           />
                         ) : (
-                          <div className="w-full h-48 bg-gray-200 rounded-lg animate-pulse" />
+                          <div className="w-full h-32 md:h-48 bg-gray-200 rounded-lg animate-pulse" />
                         )}
                       </div>
-                      <p className="text-xl font-bold text-center">{book}</p>
+                      <p className="text-sm md:text-xl font-bold text-center mt-2">
+                        {book}
+                      </p>
                     </DialogTitle>
                   </DialogHeader>
                 </div>
+
                 {/* 문제 확인 버튼 */}
                 {!showQuestion && (
                   <div className="flex justify-center flex-grow">
@@ -437,11 +448,12 @@ export function BingoBoard({
                       alt="문제 확인"
                       width={300}
                       height={400}
-                      className="w-[300px] h-[400px] cursor-pointer hover:scale-105 transition-transform"
+                      className="w-[160px] md:w-[300px] h-[200px] md:h-[400px] cursor-pointer hover:scale-105 transition-transform"
                       priority={false}
                     />
                   </div>
                 )}
+
                 {/* 오른쪽: 문제 답안 */}
                 {showQuestion && (
                   <div className="flex-1 flex flex-col items-stretch h-full">
@@ -452,20 +464,20 @@ export function BingoBoard({
                       width={160}
                       height={160}
                       onClick={handleShowChance}
-                      className="absolute top-[-60px] right-[-60px] w-40 h-40 cursor-pointer animate-bounce duration-[30000ms] linear infinite"
+                      className="absolute top-[-30px] md:top-[-60px] right-[-30px] md:right-[-60px] w-24 h-24 md:w-40 md:h-40 cursor-pointer animate-bounce duration-[30000ms] linear infinite"
                       priority={false}
                     />
 
                     {!showAnswer ? (
-                      <div className="space-y-6 text-center">
-                        <DialogDescription className="text-3xl font-semibold text-left leading-10">
+                      <div className="space-y-4 md:space-y-6 text-center">
+                        <DialogDescription className="text-base md:text-3xl font-semibold text-left leading-relaxed md:leading-10">
                           {question}
                         </DialogDescription>
 
                         {/* 문제 이미지 */}
                         {answer && (
-                          // 객관식 문항 보기
-                          <div className="flex items-center flex-wrap gap-4">
+                          // ���관식 문항 보기
+                          <div className="flex items-center flex-wrap gap-2 md:gap-4">
                             {Object.entries(answer).map(([key, value]) => {
                               const isSelected =
                                 selectedAnswer === parseInt(key);
@@ -483,7 +495,7 @@ export function BingoBoard({
                                     }
                                   }}
                                   className={cn(
-                                    `${!answer_imageUrl ? 'w-full rounded-full px-4 py-4' : 'w-1/3 py-4 pl-4 rounded-2xl'} flex-grow bg-white flex items-center gap-2 cursor-pointer transition-all duration-200  hover:shadow-black/50 hover:shadow-2xl`,
+                                    `${!answer_imageUrl ? 'w-full rounded-full px-2 md:px-4 py-2 md:py-4' : 'w-1/3 py-2 md:py-4 pl-2 md:pl-4 rounded-xl md:rounded-2xl'} flex-grow bg-white flex items-center gap-1 md:gap-2 cursor-pointer transition-all duration-200 hover:shadow-black/50 hover:shadow-2xl`,
                                     isWrong &&
                                       'bg-red-100 border-2 border-red-500',
                                     isSelected &&
@@ -493,7 +505,7 @@ export function BingoBoard({
                                 >
                                   <span
                                     className={cn(
-                                      'flex-shrink-0 w-8 h-8 rounded-full inline-flex items-center justify-center text-white',
+                                      'flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full inline-flex items-center justify-center text-white',
                                       isWrong
                                         ? 'bg-gradient-to-b from-red-500 to-red-700'
                                         : isSelected &&
@@ -510,13 +522,13 @@ export function BingoBoard({
                                       alt={`${keyword} 이미지`}
                                       width={400}
                                       height={200}
-                                      className="w-full max-w-24 sm:max-w-48 mx-auto rounded-2xl object-cover"
+                                      className="w-full max-w-16 sm:max-w-24 md:max-w-48 mx-auto rounded-xl md:rounded-2xl object-cover"
                                       priority={false}
                                     />
                                   ) : (
                                     <span
                                       className={cn(
-                                        'text-xl flex-grow',
+                                        'text-base md:text-xl flex-grow',
                                         isWrong && 'text-red-600',
                                         isSelected &&
                                           parseInt(key) === correct &&
@@ -533,17 +545,17 @@ export function BingoBoard({
                         )}
 
                         {answer === null && (
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-2 gap-2 md:gap-4">
                             {/* 정답 버튼 보기 */}
                             <Button
                               onClick={handleAnswerA}
-                              className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
+                              className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[30px] md:rounded-[50px]"
                             >
                               {TEAMS.RED} 정답
                             </Button>
                             <Button
                               onClick={handleAnswerB}
-                              className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
+                              className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[30px] md:rounded-[50px]"
                             >
                               {TEAMS.GREEN} 정답
                             </Button>
@@ -553,12 +565,12 @@ export function BingoBoard({
                     ) : (
                       <div className="space-y-6 flex flex-col items-center flex-grow">
                         {/* 정답 보기 */}
-                        <div className="w-full p-4 bg-white rounded-[50px] shadow flex items-center gap-2">
+                        <div className="w-full p-1 md:p-2 bg-white rounded-[50px] shadow flex items-center gap-2">
                           <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-b from-[#00226e] to-[#001239] rounded-full inline-flex items-center justify-center text-white">
                             {correct}
                           </span>
                           {answer && correct && (
-                            <span className="text-lg text-center flex-grow">
+                            <span className="text-sm md:text-lg text-center flex-grow">
                               {answer[correct as keyof typeof answer]}
                             </span>
                           )}
@@ -577,20 +589,20 @@ export function BingoBoard({
                               priority={false}
                             />
                           )}
-                          <p>{Comment}</p>
+                          <p className="text-sm md:text-base">{Comment}</p>
                         </div>
 
                         {/* 정답 버튼 보기 */}
                         <div className="grid grid-cols-2 gap-4">
                           <Button
                             onClick={handleAnswerA}
-                            className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[50px]"
+                            className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#ed1c24] to-[#870f14] rounded-[30px] md:rounded-[50px]"
                           >
                             {TEAMS.RED} 정답
                           </Button>
                           <Button
                             onClick={handleAnswerB}
-                            className="font-bold px-12 py-8 text-white text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[50px]"
+                            className="font-bold px-4 md:px-12 py-4 md:py-8 text-white text-lg md:text-2xl bg-gradient-to-b from-[#00a14b] to-[#003b1b] rounded-[30px] md:rounded-[50px]"
                           >
                             {TEAMS.GREEN} 정답
                           </Button>
@@ -616,25 +628,25 @@ export function BingoBoard({
             <DialogDescription className="sr-only">
               랜덤 찬스 카드 선택.
             </DialogDescription>
-            <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-transparent p-8 z-50">
+            <DialogContent className="max-w-[90vw] md:max-w-[980px] bg-transparent p-4 md:p-8 z-50">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-center mb-8">
+                <DialogTitle className="text-2xl font-bold text-center mb-4 md:mb-8">
                   <Image
                     src={'/random-title.svg'}
                     alt="chance random card"
                     width={600}
                     height={200}
-                    className="w-3xl h-[200px] mx-auto"
+                    className="w-full max-w-[200px] md:max-w-[600px] h-[100px] md:h-[200px] mx-auto"
                     priority={false}
                   />
                 </DialogTitle>
               </DialogHeader>
 
-              <div className="grid grid-cols-5 gap-4">
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-4">
                 {shuffledChanceCards.map((card, index) => (
                   <motion.div
                     key={card.id}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <Button
@@ -645,11 +657,11 @@ export function BingoBoard({
                       `)}
                     >
                       {selectedChanceCard?.id === card.id ? (
-                        <p className="text-xl whitespace-pre-wrap break-words">
+                        <p className="text-xs md:text-xl whitespace-pre-wrap break-words px-2 md:px-4">
                           {card.description}
                         </p>
                       ) : (
-                        <p className="text-4xl font-bold absolute bottom-[25%]">
+                        <p className="text-2xl md:text-4xl font-bold absolute bottom-[25%]">
                           {index + 1}
                         </p>
                       )}
